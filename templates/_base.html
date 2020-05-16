@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Lightning Cards {% endblock %}</title>
+</head>
+<body>
+
+    <header>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'new_deck' %}">Create Deck</a></li>
+            <li><a href="{% url 'deck_list' %}">Decks</a></li>
+        </ul>
+    </header>
+    {% block content %}
+
+    {% endblock %}
+    
+</body>
+</html>

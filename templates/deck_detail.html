@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+
+{% block title %}{{deck}}{% endblock title %}
+
+
+{% block content %}
+
+{{deck.name}}
+
+<a href="{% url 'new_card' username=deck.user.username deck_slug=deck.slug %}">Add Card</a>
+
+{% for card in cards %}
+<ul>
+    <li>{{card}} <a href="{% url 'update_card' username=deck.user.username deck_slug=deck.slug pk=card.pk %}">Edit</a></li>
+</ul>
+{% endfor %}
+{% endblock content %}

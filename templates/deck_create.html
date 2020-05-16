@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+
+
+{% block title %}Create a Deck{% endblock title %}
+
+
+{% block content %}
+
+<h1>Create a new deck of lightning cards</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Create</button>
+</form>
+
+{% endblock content %}
