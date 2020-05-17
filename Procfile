@@ -1,0 +1,1 @@
+web: gunicorn lighting_cards.wsgi --log-file -

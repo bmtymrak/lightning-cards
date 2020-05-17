@@ -31,7 +31,7 @@ SECRET_KEY=env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', default=False)
 # DEBUG=False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
 
 
 # Application definition
@@ -167,3 +167,7 @@ LOGOUT_REDIRECT_URL = 'home'
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
