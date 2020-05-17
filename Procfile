@@ -1,1 +1,1 @@
-web: gunicorn lighting_cards.wsgi --log-file -
+web: gunicorn lightning_cards.wsgi --log-file -
