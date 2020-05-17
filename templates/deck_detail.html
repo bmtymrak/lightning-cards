@@ -2,16 +2,42 @@
 
 {% block title %}{{deck}}{% endblock title %}
 
+{% block nav %}
+{% include "_navbar.html" %}
+{% endblock nav %}
 
 {% block content %}
+<div class="page-header">
+    <h1>{{deck.name}}</h1>
+</div>
 
-{{deck.name}}
+<div class="edit-links-nav">
+    <a href="{% url 'new_card' username=deck.user.username deck_slug=deck.slug %}">
+        <div class="edit-links-item">
+        <p>Add Card</p>
+        </div>
+    </a>
 
-<a href="{% url 'new_card' username=deck.user.username deck_slug=deck.slug %}">Add Card</a>
+    <a href="{% url 'delete_deck' username=deck.user.username slug=deck.slug %}">
+        <div class="edit-links-item">
+        <p>Delete Deck</p>
+        </div>
+    </a>
+</div>
 
-{% for card in cards %}
-<ul>
-    <li>{{card}} <a href="{% url 'update_card' username=deck.user.username deck_slug=deck.slug pk=card.pk %}">Edit</a></li>
-</ul>
-{% endfor %}
+<div class="deck-list">
+    {% for card in cards %}
+    
+        <a class="deck-card-link" href="{% url 'practice_front' username=user.username deck_slug=deck.slug pk=card.pk%}">
+            <div class="deck-card">
+                <div class="deck-card-main-text"><p>{{card}}</p></div>
+                <!-- <a class="bottom-left" href="{% url 'update_card' username=deck.user.username deck_slug=deck.slug pk=card.pk %}">Edit</a>
+                <a class="bottom-right" href="{% url 'delete_card' username=deck.user.username deck_slug=deck.slug pk=card.pk %}">Delete</a> -->
+            </div>
+        </a>
+    
+    
+    {% endfor %}
+</div>
+    
 {% endblock content %}

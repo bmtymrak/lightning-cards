@@ -9,6 +9,11 @@ verify_ssl = true
 django = "==3.0.6"
 django-debug-toolbar = "*"
 django-extensions = "*"
+gunicorn = "==20.0.4"
+whitenoise = "==5.0.1"
+dj-database-url = "==0.5.0"
+django-environ = "==0.4.5"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.8"

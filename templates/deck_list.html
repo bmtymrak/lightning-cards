@@ -2,17 +2,36 @@
 
 {% block title %}Decks{% endblock title %}
 
-
+{% block nav %}
+{% include "_navbar.html" %}
+{% endblock nav %}
 
 {% block content %}
 
+<div class="page-header">
+    <h1>Decks</h1>
+</div>
+
+<div class="edit-links-nav">
+    <a href="{% url 'new_deck' %}">
+        <div class="edit-links-item">
+        <p>Add Deck</p>
+        </div>
+    </a>
+</div>
+
+<div class="deck-list">
 {% for deck in deck_list %}
 
-<ul>
-    <li> <a href="{% url 'deck_detail' username=deck.user.username slug=deck.slug %}">{{deck}}</a></li>
-</ul>
+
+    <a class="deck-card-link" href="{% url 'deck_detail' username=deck.user.username slug=deck.slug %}">
+        <div class="deck-card">{{deck}}</div>
+    </a>
+    
+    <!-- <a href="{% url 'practice_front' username=deck.user.username deck_slug=deck.slug pk=0 %}">Practice</a> </li> -->
 
 {% endfor %}
+</div>
 
 
 

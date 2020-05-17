@@ -5,7 +5,7 @@ from django.template.defaultfilters import slugify
 
 class Deck(models.Model):
     name = models.CharField(max_length = 250, blank=False)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField()
 
     user = models.ForeignKey(
         get_user_model(),
@@ -19,6 +19,12 @@ class Deck(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
+
+    class Meta:
+        models.UniqueConstraint(
+            fields=['slug', 'user'], 
+            name='unique_slug_user'
+            )
 
 class Card(models.Model):
     front = models.CharField(max_length=500, unique=True)

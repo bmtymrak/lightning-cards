@@ -1,22 +1,27 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Lightning Cards {% endblock %}</title>
+    
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'new_deck' %}">Create Deck</a></li>
-            <li><a href="{% url 'deck_list' %}">Decks</a></li>
-        </ul>
-    </header>
+
+    {% block nav %}
+    {% endblock nav %}
+
+    <div class="main-content">
     {% block content %}
 
     {% endblock %}
+
+    </div>
     
 </body>
 </html>

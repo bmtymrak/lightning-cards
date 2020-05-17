@@ -3,16 +3,24 @@
 
 {% block title %}Create a Deck{% endblock title %}
 
+{% block nav %}
+{% include "_navbar.html" %}
+{% endblock nav %}
 
 {% block content %}
 
-<h1>Create a new deck of lightning cards</h1>
+<div class="page-header">
+    <h1>Create a new deck of cards</h1>
+</div>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <button type="submit">Create</button>
-</form>
+<div class="edit-container">
+    <form class="edit-form" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-button-container">
+        <button type="submit">Create</button>
+        </div>
+    </form>
+</div>
 
 {% endblock content %}

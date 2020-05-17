@@ -1,10 +1,29 @@
 {% extends '_base.html' %}
-
+{% load static %}
 
 {% block content %}
 
-<h1>Lightning Cards</h1>
+<header class="landing-header">
+    <h1>Lightning  <img src="{% static 'images/lightning.svg' %}" width=40px alt=""> Cards</h1>
 
-<a href="{% url 'login' %}">Login</a>
+    <p>Quick and easy flash cards for learning lightning fast</p>
+</header>
+
+<div class="landing-main">
+
+    <div class="auth-links">
+        <a href="{% url 'signup' %}"><div class="auth-link-div">Sign Up</div></a>
+        <a href="{% url 'login' %}"><div class="auth-link-div">Log In</div></a>
+    </div>
+
+
+    <div class="auth-links">
+        <a href=""><div class="demo-link-div"><p>Demo</p><p>(Coming soon!)</p></div></a>
+    </div>
+
+
+
+</div>
+
 
 {% endblock %}

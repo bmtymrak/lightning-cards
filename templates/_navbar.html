@@ -1,0 +1,12 @@
+<nav class="nav-bar">
+    <div>
+        <ul>
+            <li><span class="nav-title">Lightning Cards</span></li>
+            <li>{{request.user}}</li>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'new_deck' %}">Create Deck</a></li>
+            <li><a href="{% url 'deck_list' %}">Decks</a></li>
+            <li><a href="{% url 'logout' %}">Log Out</a></li>
+        </ul>
+    </div>
+</nav>

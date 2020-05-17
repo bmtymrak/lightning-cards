@@ -2,18 +2,27 @@
 
 {% block title %}Edit card{% endblock title %}
 
+{% block nav %}
+{% include "_navbar.html" %}
+{% endblock nav %}
+
 
 {% block content %}
 
 
-<h1>Edit Card</h1>
+<div class="page-header">
+    <h1>Edit</h1>
+</div>
 
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-
-    <button type="submit">Save</button>
-</form>
+<div class="edit-container">
+    <form class="edit-form" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-button-container">
+            <button type="submit">Edit</button>
+        </div>
+    </form>
+</div>
 
 
 {% endblock content %}
