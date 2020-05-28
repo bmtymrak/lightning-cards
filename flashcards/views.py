@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import CreateView, UpdateView, DetailView, ListView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
+from django.http import JsonResponse
 
 from .models import Deck, Card
 
@@ -19,6 +20,8 @@ class DeckCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('deck_detail', kwargs={'username':self.request.user.username, 'slug':self.object.slug})
+
+
 
 class DeckDetailView(LoginRequiredMixin, DetailView):
     model = Deck
@@ -95,18 +98,19 @@ class CardDeleteView(LoginRequiredMixin, DeleteView):
 class PracticeViewFront(LoginRequiredMixin, DetailView):
     model = Card
     template_name = 'practice_front.html'
+    
     def get_object(self):
-        cards = list(Card.objects.all().filter(deck__slug=self.kwargs['deck_slug'], deck__user=self.request.user))
-        pk = self.kwargs.get(self.pk_url_kwarg)
-        if pk == 0:
-            current_card = cards[0]
+        self.cards = list(Card.objects.all().filter(deck__slug=self.kwargs['deck_slug'], deck__user=self.request.user))
+        self.pk = self.kwargs.get(self.pk_url_kwarg)
+        if self.pk == 0:
+            current_card = self.cards[0]
         else:
-            current_card = Card.objects.all().get(pk=pk)
+            current_card = Card.objects.all().get(pk=self.pk)
         
-        current_card_index = cards.index(current_card)
+        current_card_index = self.cards.index(current_card)
         
         try:
-            self.next_pk = cards[current_card_index+1].pk
+            self.next_pk = self.cards[current_card_index+1].pk
         except IndexError:
             self.next_pk = 0
 
@@ -118,7 +122,26 @@ class PracticeViewFront(LoginRequiredMixin, DetailView):
         kwargs.update({'user':self.request.user})
         kwargs.update({'deck_slug':self.kwargs['deck_slug']})
         kwargs.update({'deck':Deck.objects.get(slug=self.kwargs['deck_slug'], user=self.request.user)})
+        kwargs.update({'cards':self.cards})
         return kwargs
+
+    def render_to_response(self, context, **response_kwargs):
+
+        if self.request.is_ajax():
+            print(context)
+            data={
+                'user':self.request.user.username,
+                'text':context['object'].front,
+                'side':'front',
+                'deck':self.kwargs['deck_slug'],
+                'card_pk': self.pk,
+                'next_pk':self.next_pk,
+            }
+            return JsonResponse(data)
+
+        else:
+            return super().render_to_response(context)
+
 
 
 class PracticeViewBack(LoginRequiredMixin, DetailView):
@@ -126,11 +149,11 @@ class PracticeViewBack(LoginRequiredMixin, DetailView):
     template_name = 'practice_back.html'
     def get_object(self):
         cards = list(Card.objects.all().filter(deck__slug=self.kwargs['deck_slug'], deck__user=self.request.user))
-        pk = self.kwargs.get(self.pk_url_kwarg)
-        if pk == 0:
+        self.pk = self.kwargs.get(self.pk_url_kwarg)
+        if self.pk == 0:
             current_card = cards[0]
         else:
-            current_card = Card.objects.all().get(pk=pk)
+            current_card = Card.objects.all().get(pk=self.pk)
         
         current_card_index = cards.index(current_card)
         
@@ -148,3 +171,117 @@ class PracticeViewBack(LoginRequiredMixin, DetailView):
         kwargs.update({'deck_slug':self.kwargs['deck_slug']})
         kwargs.update({'deck':Deck.objects.get(slug=self.kwargs['deck_slug'], user=self.request.user)})
         return kwargs
+
+    def render_to_response(self, context, **response_kwargs):
+
+        if self.request.is_ajax():
+            print(context)
+            data={
+                'user':self.request.user.username,
+                'text':context['object'].back,
+                'side':'back',
+                'deck':self.kwargs['deck_slug'],
+                'card_pk': self.pk,
+                'next_pk':self.next_pk,
+            }
+            return JsonResponse(data)
+
+        else:
+            return super().render_to_response(context)
+
+
+
+
+class PracticeDataFront(LoginRequiredMixin, DetailView):
+    model = Card
+    template_name = 'practice_front.html'
+    
+    def get_object(self):
+        self.cards = list(Card.objects.all().filter(deck__slug=self.kwargs['deck_slug'], deck__user=self.request.user))
+        self.pk = self.kwargs.get(self.pk_url_kwarg)
+        if self.pk == 0:
+            current_card = self.cards[0]
+        else:
+            current_card = Card.objects.all().get(pk=self.pk)
+        
+        current_card_index = self.cards.index(current_card)
+        
+        try:
+            self.next_pk = self.cards[current_card_index+1].pk
+        except IndexError:
+            self.next_pk = 0
+
+        return current_card
+
+    def get_context_data(self, **kwargs):
+        kwargs=super().get_context_data(**kwargs)
+        kwargs.update({'next_pk':self.next_pk})
+        kwargs.update({'user':self.request.user})
+        kwargs.update({'deck_slug':self.kwargs['deck_slug']})
+        kwargs.update({'deck':Deck.objects.get(slug=self.kwargs['deck_slug'], user=self.request.user)})
+        kwargs.update({'cards':self.cards})
+        return kwargs
+
+    def render_to_response(self, context, **response_kwargs):
+
+        if self.request.is_ajax():
+            print(context)
+            data={
+                'user':self.request.user.username,
+                'text':context['object'].front,
+                'side':'front',
+                'deck':self.kwargs['deck_slug'],
+                'card_pk': self.pk,
+                'next_pk':self.next_pk,
+            }
+            return JsonResponse(data)
+
+        else:
+            return super().render_to_response(context)
+
+
+
+class PracticeDataBack(LoginRequiredMixin, DetailView):
+    model = Card
+    template_name = 'practice_back.html'
+    def get_object(self):
+        cards = list(Card.objects.all().filter(deck__slug=self.kwargs['deck_slug'], deck__user=self.request.user))
+        self.pk = self.kwargs.get(self.pk_url_kwarg)
+        if self.pk == 0:
+            current_card = cards[0]
+        else:
+            current_card = Card.objects.all().get(pk=self.pk)
+        
+        current_card_index = cards.index(current_card)
+        
+        try:
+            self.next_pk = cards[current_card_index+1].pk
+        except IndexError:
+            self.next_pk = 0
+
+        return current_card
+
+    def get_context_data(self, **kwargs):
+        kwargs=super().get_context_data(**kwargs)
+        kwargs.update({'next_pk':self.next_pk})
+        kwargs.update({'user':self.request.user})
+        kwargs.update({'deck_slug':self.kwargs['deck_slug']})
+        kwargs.update({'deck':Deck.objects.get(slug=self.kwargs['deck_slug'], user=self.request.user)})
+        return kwargs
+
+    def render_to_response(self, context, **response_kwargs):
+
+        if self.request.is_ajax():
+            print(context)
+            data={
+                'user':self.request.user.username,
+                'text':context['object'].back,
+                'side':'back',
+                'deck':self.kwargs['deck_slug'],
+                'card_pk': self.pk,
+                'next_pk':self.next_pk,
+            }
+            return JsonResponse(data)
+
+        else:
+            return super().render_to_response(context)

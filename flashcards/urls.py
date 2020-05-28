@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import DeckCreateView, DeckDetailView, CardCreateView, CardUpdateView, DeckListView, DeckDeleteView, CardDeleteView, PracticeViewFront, PracticeViewBack
+from .views import DeckCreateView, DeckDetailView, CardCreateView, CardUpdateView, DeckListView, DeckDeleteView, CardDeleteView, PracticeViewFront, PracticeViewBack, PracticeDataFront, PracticeDataBack
 
 
 
@@ -14,4 +14,6 @@ urlpatterns = [
     path('<str:username>/<slug:deck_slug>/<int:pk>/delete/', CardDeleteView.as_view(), name="delete_card"),
     path('<str:username>/<slug:deck_slug>/practice/<int:pk>/front/', PracticeViewFront.as_view(), name="practice_front" ),
     path('<str:username>/<slug:deck_slug>/practice/<int:pk>/back/', PracticeViewBack.as_view(), name="practice_back" ),
+    path('<str:username>/<slug:deck_slug>/<int:pk>/front/', PracticeDataFront.as_view(), name="practice_front_data" ),
+    path('<str:username>/<slug:deck_slug>/<int:pk>/back/', PracticeDataBack.as_view(), name="practice_back_data" ),
 ]

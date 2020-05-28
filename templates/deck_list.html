@@ -25,7 +25,7 @@
 
 
     <a class="deck-card-link" href="{% url 'deck_detail' username=deck.user.username slug=deck.slug %}">
-        <div class="deck-card">{{deck}}</div>
+        <div class="deck-card"><div class="deck-card-main-text"><p>{{deck}}</p></div></div>
     </a>
     
     <!-- <a href="{% url 'practice_front' username=deck.user.username deck_slug=deck.slug pk=0 %}">Practice</a> </li> -->

@@ -13,14 +13,22 @@
 <body>
 
 
-    {% block nav %}
-    {% endblock nav %}
+    <div class="page-container">
+        {% block nav %}
+        {% endblock nav %}
 
-    <div class="main-content">
-    {% block content %}
+        <div class="main-container">
+            <div class="main-content">
+                {% block content %}
 
-    {% endblock %}
+                {% endblock %}
+            </div>
 
+            <footer>
+                <p>Lightning cards is a project by Brennan Tymrak</p>
+            </footer>
+        </div>
+       
     </div>
     
 </body>

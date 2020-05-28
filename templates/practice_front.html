@@ -28,19 +28,89 @@
 
 <div class="card-container">
     <div class="card">
-        <h2>{{card}}</h2>
+        <h2 id="card-content">{{card}}</h2>
     </div>
     
     <div class="card-links">
-        <a href="{% url 'practice_back' username=user.username deck_slug=deck_slug pk=card.pk %}">
+        <a id="flip-card" href="{% url 'practice_back' username=user.username deck_slug=deck_slug pk=card.pk %}">
             <div class="card-link-nav card-flip">Flip</div>
         </a>
 
-        <a href="{% url 'practice_front' username=user.username deck_slug=deck_slug pk=next_pk%}">
+        <a id="next-card" href="{% url 'practice_front' username=user.username deck_slug=deck_slug pk=next_pk%}">
             <div class="card-link-nav card-next">Next Card</div>
         </a>
         
     </div>
 </div>
 
+
+
+<script>
+    let content = document.querySelector('#card-content')
+    
+    let nextCardLink = document.querySelector('#next-card')
+    
+    let flipLink = document.querySelector('#flip-card')    
+
+    let flipUrl = '{% url "practice_back_data" username=user.username deck_slug=deck_slug pk=card.pk %}'
+
+    let nextUrl = '{% url "practice_front_data" username=user.username deck_slug=deck_slug pk=next_pk %}'
+
+    function flipCard(e){
+        console.log('Made it to flipCard')
+        e.preventDefault();
+    
+        fetch(flipUrl, {
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        credentials: 'include'
+        })
+        .then(response => {
+            return response.json()
+        })
+        .then(data=> {
+            console.log(data)
+            content.textContent = data.text
+            if(data.side == 'front'){
+                flipUrl =  `/lightning-cards/${data.user}/${data.deck}/${data.card_pk}/back/`
+            }
+            else{
+                flipUrl = `/lightning-cards/${data.user}/${data.deck}/${data.card_pk}/front/`
+            }
+
+        })
+    }
+
+
+    function getNextCard(e){
+        console.log('Made it to getNextCard')
+        e.preventDefault();
+    
+        fetch(nextUrl, {
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        credentials: 'include'
+        })
+        .then(response => {
+            return response.json()
+        })
+        .then(data=> {
+            console.log(data)
+            content.textContent = data.text
+            nextUrl = `/lightning-cards/${data.user}/${data.deck}/${data.next_pk}/front/`
+            flipUrl = `/lightning-cards/${data.user}/${data.deck}/${data.card_pk}/back/`
+        })
+    }
+    
+    flipLink.addEventListener("click", flipCard)
+    nextCardLink.addEventListener("click", getNextCard)
+        
+
+    </script>
+
 {% endblock content %}
+

@@ -21,10 +21,12 @@ class Deck(models.Model):
         return super().save(*args, **kwargs)
 
     class Meta:
-        models.UniqueConstraint(
-            fields=['slug', 'user'], 
-            name='unique_slug_user'
+         constraints = [
+            models.UniqueConstraint(
+                fields=['slug', 'user'], 
+                name='unique_slug_user'
             )
+         ]
 
 class Card(models.Model):
     front = models.CharField(max_length=500, unique=True)
