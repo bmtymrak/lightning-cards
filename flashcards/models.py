@@ -29,11 +29,21 @@ class Deck(models.Model):
          ]
 
 class Card(models.Model):
-    front = models.CharField(max_length=500, unique=True)
+    front = models.CharField(max_length=500)
     back = models.TextField()
-    deck = models.ManyToManyField(
+    deck = models.ForeignKey(
         Deck,
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):
         return self.front
+
+
+    class Meta:
+         constraints = [
+            models.UniqueConstraint(
+                fields=['front', 'deck'], 
+                name='unique_front_deck'
+            )
+         ]

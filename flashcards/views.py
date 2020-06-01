@@ -5,15 +5,25 @@ from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
 
 from .models import Deck, Card
+from .forms import DeckForm, CardForm
 
 # Create your views here.
 
 class DeckCreateView(LoginRequiredMixin, CreateView):
     model = Deck
-    fields = ['name']
+    form_class = DeckForm
     template_name = 'deck_create.html'
 
-    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        
+        if self.request.method == 'POST':
+            data = self.request.POST.copy()
+            data['user'] = self.request.user
+            kwargs['data'] = data
+
+        return kwargs
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
@@ -64,13 +74,24 @@ class DeckDeleteView(LoginRequiredMixin, DeleteView):
 
 class CardCreateView(LoginRequiredMixin, CreateView):
     model = Card
-    fields = ['front', 'back']
+    form_class = CardForm
+    # fields = ['front', 'back']
     template_name = 'card_create.html'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        
+        if self.request.method == 'POST':
+            data = self.request.POST.copy()
+            data['deck'] = Deck.objects.all().filter(slug=self.kwargs['deck_slug'], user=self.request.user).get()
+            kwargs['data'] = data
+
+        return kwargs
+
+
     def form_valid(self, form):
-        self.obj = form.save()
-        # deck = Deck.objects.all().filter(slug=self.kwargs['deck_slug']).get()
-        self.obj.deck.set(Deck.objects.all().filter(slug=self.kwargs['deck_slug'], user=self.request.user))
+        self.obj = form.save(commit=False)
+        self.obj.deck = Deck.objects.all().filter(slug=self.kwargs['deck_slug'], user=self.request.user).get()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -128,7 +149,6 @@ class PracticeViewFront(LoginRequiredMixin, DetailView):
     def render_to_response(self, context, **response_kwargs):
 
         if self.request.is_ajax():
-            print(context)
             data={
                 'user':self.request.user.username,
                 'text':context['object'].front,
@@ -175,7 +195,6 @@ class PracticeViewBack(LoginRequiredMixin, DetailView):
     def render_to_response(self, context, **response_kwargs):
 
         if self.request.is_ajax():
-            print(context)
             data={
                 'user':self.request.user.username,
                 'text':context['object'].back,
@@ -225,7 +244,6 @@ class PracticeDataFront(LoginRequiredMixin, DetailView):
     def render_to_response(self, context, **response_kwargs):
 
         if self.request.is_ajax():
-            print(context)
             data={
                 'user':self.request.user.username,
                 'text':context['object'].front,
@@ -272,7 +290,6 @@ class PracticeDataBack(LoginRequiredMixin, DetailView):
     def render_to_response(self, context, **response_kwargs):
 
         if self.request.is_ajax():
-            print(context)
             data={
                 'user':self.request.user.username,
                 'text':context['object'].back,

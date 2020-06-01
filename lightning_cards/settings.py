@@ -179,3 +179,4 @@ if env('ENVIRONMENT') == 'production':
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    SECURE_REFERRER_POLICY = "same-origin"
