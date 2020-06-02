@@ -14,13 +14,13 @@
 </div>
 
 <div class="edit-links-nav">
-    <a href="{% url 'update_card' username=user.username deck_slug=deck_slug  pk=card.pk %}">
+    <a href="{% url 'update_card' deck_slug=deck_slug  pk=card.pk %}">
         <div class="edit-links-item">
         <p>Edit Card</p>
         </div>
     </a>
 
-    <a href="{% url 'delete_card' username=user.username deck_slug=deck_slug  pk=card.pk%}">
+    <a href="{% url 'delete_card' deck_slug=deck_slug  pk=card.pk%}">
         <div class="edit-links-item">
         <p>Delete Card</p>
         </div>
@@ -33,11 +33,11 @@
     </div>
     
     <div class="card-links">
-        <a href="{% url 'practice_front' username=user.username deck_slug=deck_slug pk=card.pk %}">
+        <a href="{% url 'practice_front' deck_slug=deck_slug pk=card.pk %}">
             <div class="card-link-nav card-flip">Flip</div>
         </a>
 
-        <a href="{% url 'practice_front' username=user.username deck_slug=deck_slug pk=next_pk%}">
+        <a href="{% url 'practice_front' deck_slug=deck_slug pk=next_pk%}">
             <div class="card-link-nav card-next">Next Card</div>
         </a>
         

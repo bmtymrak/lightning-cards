@@ -29,7 +29,7 @@ class DeckCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('deck_detail', kwargs={'username':self.request.user.username, 'slug':self.object.slug})
+        return reverse_lazy('deck_detail', kwargs={'slug':self.object.slug})
 
 
 
@@ -67,6 +67,9 @@ class DeckDeleteView(LoginRequiredMixin, DeleteView):
     model = Deck
     template_name = "deck_delete.html"
 
+    def get_queryset(self):
+        return Deck.objects.all().filter(user=self.request.user)
+
     def get_success_url(self):
         return reverse_lazy('deck_list')
 
@@ -95,7 +98,7 @@ class CardCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('deck_detail', kwargs={'username':self.request.user.username, 'slug':self.kwargs['deck_slug']})
+        return reverse_lazy('deck_detail', kwargs={'slug':self.kwargs['deck_slug']})
 
 
     
@@ -105,14 +108,14 @@ class CardUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'card_update.html'
 
     def get_success_url(self):
-        return reverse_lazy('practice_front', kwargs={'username':self.request.user.username, 'deck_slug':self.kwargs['deck_slug'], 'pk':self.object.pk})
+        return reverse_lazy('practice_front', kwargs={'deck_slug':self.kwargs['deck_slug'], 'pk':self.object.pk})
 
 class CardDeleteView(LoginRequiredMixin, DeleteView):
     model = Card
     template_name = "card_delete.html"
 
     def get_success_url(self):
-        return reverse_lazy('deck_detail', kwargs={'username':self.request.user.username, 'slug':self.kwargs['deck_slug']})
+        return reverse_lazy('deck_detail', kwargs={'slug':self.kwargs['deck_slug']})
 
 
 
