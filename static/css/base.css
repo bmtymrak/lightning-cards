@@ -476,12 +476,10 @@ footer p{
         min-height: 100%;
         width: 100%;
         justify-content: flex-start;
-        transition: all 1s linear;
     }
 
     .nav-bar-hidden{
         max-height: 50px;
-        /* transition: all 5s linear; */
     }
 
     /* .nav-bar-show{
