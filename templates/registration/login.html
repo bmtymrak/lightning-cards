@@ -15,7 +15,20 @@
 <div class="edit-container-loggedout">
     <form class="edit-form" method="POST">
         {% csrf_token %}
-        {{form.as_p}}
+        <!-- {{form.as_p}} -->
+
+        <div class="auth-form-item">
+            <p>{{form.username.label_tag}}</p>
+            <p>{{form.username.errors}}</p>
+            <p>{{form.username}}</p>
+        </div>
+        
+        <div class="auth-form-item">
+            <p>{{form.password.label_tag}}</p>
+            <p>{{form.password.errors}}</p>
+            <p>{{form.password}}</p>
+        </div>
+
         <div class="form-button-container">
             <button type="submit">Login</button>
         </div>

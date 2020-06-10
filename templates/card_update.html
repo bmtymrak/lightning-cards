@@ -11,13 +11,24 @@
 
 
 <div class="page-header">
-    <h1>Edit</h1>
+    <h1>Edit Card</h1>
 </div>
 
 <div class="edit-container">
     <form class="edit-form" method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>{{form.errors}}</p>
+
+        <div class="auth-form-item">
+            <p>{{form.front.label_tag}}</p>
+            <p>{{form.front}}</p>
+        </div>
+
+        <div class="auth-form-item">
+            <p>{{form.back.label_tag}}</p>
+            <p>{{form.back}}</p>
+        </div>
+
         <div class="form-button-container">
             <button type="submit">Edit</button>
         </div>

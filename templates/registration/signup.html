@@ -14,14 +14,43 @@
     <h1>Sign Up</h1>
 </div>
 
+<div class="signup-text">
+    <p>Before you sign up, please understand that Lightning Cards is still under development. It isn't perfect or complete. At this point, there is no guarantee that information saved in Lightning Cards is completely private or that your account will continue to exists after further updates are made. By signing up for Lightning Cards you accept these conditions.</p>
+</div>
+
 <div class="edit-container-loggedout">
-<form class="edit-form" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <div class="form-button-container">
-    <button type="submit">Sign Up</button>
-    </div>
-</form>
+    <form class="edit-form" method="POST">
+        {% csrf_token %}
+        <div class="auth-form-item">
+            <p>{{form.email.label_tag}}</p>
+            {% if form.email.errors %}<p>{{form.email.errors}}</p>{% endif %}
+            <p>{{form.email}}</p>
+        </div>
+
+        <div class="auth-form-item">
+            <p>{{form.username.label_tag}}</p>
+            <p>{{form.username.errors}}</p>
+            <p>{{form.username}}</p>
+            <p style="color:gray; font-size:12px;">{{form.username.help_text}}</p>
+        </div>
+
+        <div class="auth-form-item">
+            <p>{{form.password1.label_tag}}</p>        
+            <p>{{form.password1.errors}}</p>
+            <p>{{form.password1}}</p>
+            <p style="color:gray; font-size:12px;">At least 8 characters, not all numbers, not similar to other personal information or a commonly used password</p>
+        </div>
+
+        <div class="auth-form-item">
+            <p>Confirm Password:</p>
+            <p>{{form.password2.errors}}</p>
+            <p>{{form.password2}}</p>
+        </div>
+
+        <div class="form-button-container">
+        <button type="submit">Sign Up</button>
+        </div>
+    </form>
 </div>
 
 {% endblock content %}

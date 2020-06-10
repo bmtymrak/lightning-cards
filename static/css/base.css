@@ -17,7 +17,9 @@ body{
     min-height: 100vh;
 }
 
-
+.nav-container{
+    display: block;
+}
 
 .nav-bar {
     align-self: stretch;
@@ -28,6 +30,10 @@ body{
     background-color: black;
     width: 200px;
     color: white;
+}
+
+.nav-bar-hidden{
+    
 }
 
 .nav-bar ul{
@@ -55,11 +61,25 @@ body{
     font-family: 'Montserrat', sans-serif;
 }
 
+.menu {
+    display: none;
+}
+
+.menu-bar{
+    width: 35px;
+    height: 3px;
+    background-color:#00F7BC;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 1px;
+}
+
 .branding-loggedout{
     display: flex;
     align-items: flex-start;
     font-size: 24px;
     font-weight: bold;
+    padding-left: 5px;
 }
 
 .branding-loggedout a{
@@ -348,12 +368,15 @@ body{
     display: flex;
     justify-content: center;
     /* width: 100%; */
+    padding-left: 10px;
+    padding-right: 10px;
 
 }
 
 .edit-form{
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .edit-links-nav{
@@ -405,10 +428,30 @@ body{
     background-color: black;
 }
 
+.auth-form-item{
+    max-width: 250px;
+    width: 250px;
+}
+
+.auth-form-item p{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.edit-form div textarea{
+    width: 250px;
+}
+
 .form-button-container{
     display: flex;
     justify-content: center;
     margin-top: 10px;
+}
+
+.signup-text{
+    max-width: 500px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 footer p{
@@ -422,11 +465,33 @@ footer p{
         min-height: 100vh;
     }
 
+    .nav-container{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
     .nav-bar{
         /* height: 100%; */
         min-height: 100%;
         width: 100%;
         justify-content: flex-start;
+        transition: all 1s linear;
+    }
+
+    .nav-bar-hidden{
+        max-height: 50px;
+        /* transition: all 5s linear; */
+    }
+
+    /* .nav-bar-show{
+        min-height: 100%;
+    } */
+
+    .menu {
+        display: block;
+        margin-top: 16px;
+        margin-right: 5px;
     }
 
     .page-header h1{

@@ -26,14 +26,13 @@ class CardForm(ModelForm):
     def clean(self):
         
         cleaned_data = super(CardForm, self).clean()
-        print(cleaned_data)
 
         if 'front' in cleaned_data.keys():
             front = cleaned_data['front']
             deck = self.data['deck']
             
             if Card.objects.all().filter(front=front, deck=deck).exists():
-                raise ValidationError('A card with that name already exists in this deck. Please use a different name')
+                raise ValidationError('A card with that front already exists in this deck. Please use a different name')
 
     class Meta:
         model=Card
