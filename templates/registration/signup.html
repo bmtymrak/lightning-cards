@@ -15,7 +15,12 @@
 </div>
 
 <div class="signup-text">
-    <p>Before you sign up, please understand that Lightning Cards is still under development. It isn't perfect or complete. At this point, there is no guarantee that information saved in Lightning Cards is completely private or that your account will continue to exists after further updates are made. By signing up for Lightning Cards you accept these conditions.</p>
+    <p>Before you sign up, please understand that Lightning Cards is still under
+        development. It isn't perfect or complete. There is no
+        guarantee that information saved in Lightning Cards is completely
+        private or that your account will continue to exists after further
+        updates are made. By signing up for Lightning Cards you accept these
+        conditions.</p>
 </div>
 
 <div class="edit-container-loggedout">
@@ -31,24 +36,27 @@
             <p>{{form.username.label_tag}}</p>
             <p>{{form.username.errors}}</p>
             <p>{{form.username}}</p>
-            <p style="color:gray; font-size:12px;">{{form.username.help_text}}</p>
+            <p style="color:gray; font-size:12px;">{{form.username.help_text}}
+            </p>
         </div>
 
         <div class="auth-form-item">
-            <p>{{form.password1.label_tag}}</p>        
+            <p>{{form.password1.label_tag}}</p>
             <p>{{form.password1.errors}}</p>
             <p>{{form.password1}}</p>
-            <p style="color:gray; font-size:12px;">At least 8 characters, not all numbers, not similar to other personal information or a commonly used password</p>
+            <p style="color:gray; font-size:12px;">At least 8 characters, not
+                all numbers, not similar to other personal information or a
+                commonly used password</p>
         </div>
 
         <div class="auth-form-item">
-            <p>Confirm Password:</p>
+            <p><label for="id_password2">Confirm Password:</label></p>
             <p>{{form.password2.errors}}</p>
             <p>{{form.password2}}</p>
         </div>
 
         <div class="form-button-container">
-        <button type="submit">Sign Up</button>
+            <button type="submit">Sign Up</button>
         </div>
     </form>
 </div>

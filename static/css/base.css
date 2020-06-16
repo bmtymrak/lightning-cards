@@ -28,7 +28,7 @@ body{
     justify-content: center;
     margin: 0px;
     background-color: black;
-    width: 200px;
+    width: 220px;
     color: white;
 }
 
@@ -436,7 +436,25 @@ body{
 .auth-form-item p{
     margin-top: 5px;
     margin-bottom: 5px;
+
 }
+
+.auth-form-item label{
+    font-weight: bold;
+}
+
+.auth-form-item input{
+    border: 3px solid black;
+    border-radius: 10px;
+    padding: 5px 5px 5px 5px;
+}
+
+.auth-form-item textarea{
+    border: 3px solid black;
+    border-radius: 10px;
+    padding: 5px 5px 5px 5px;
+}
+
 
 .edit-form div textarea{
     width: 250px;

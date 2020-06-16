@@ -9,12 +9,14 @@
 
 {% block content %}
 
-<h1>Delete card</h1>
+<h1>Delete "{{object.front}}" card </h1>
 
-<form method="POST">
+<form class="edit-form" method="POST">
     {% csrf_token %}
     {{form.as_p}}
-    <button type="submit">Delete</button>
+    <div class="form-button-container"> <button type="submit">Delete</button>
+    </div>
+
 </form>
 
 
