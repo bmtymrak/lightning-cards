@@ -1,5 +1,5 @@
 # Lightning Cards
-Lightning Cards is a flashcard based learning tool developed as a project to learn Django.
+Lightning Cards is a minimalistic, flashcard based, learning tool developed as a project to learn Django.
 
 ## Demo
 [Try out Lightning Cards](https://lightning-cards.herokuapp.com)
