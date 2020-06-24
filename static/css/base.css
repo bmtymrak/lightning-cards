@@ -223,6 +223,19 @@ body{
     font-size: 48px;
 }
 
+.review-options-container{
+    display: flex;
+    justify-content: center;
+}
+
+.review-option{
+    padding: 5px 5px 5px 5px;
+    border: 3px solid black;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
 .deck-list {
     display: flex;
@@ -299,6 +312,7 @@ body{
     align-items: center;
     margin-top: 100px;
 }
+
 .card {
     display: flex;
     justify-content: center;
@@ -310,6 +324,7 @@ body{
     border: 5px solid black;
     
 }
+
 
 .card-links{
     display: flex;
@@ -329,6 +344,50 @@ body{
     border-radius: 10px;
     border: 5px solid black;
     font-weight: bold;
+}
+
+.card-ranking-nav{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 40px;
+    border-radius: 10px;
+    border: 5px solid black;
+    font-weight: bold;
+}
+
+.card-hard{
+    background-color: #FE1355;
+}
+
+.card-hard:hover{
+    color: #FE1355;
+    background-color: black;
+    transition: all .12s cubic-bezier(.47,0,.745,.715);
+}
+
+.card-medium{
+    background-color: #FFE700;
+    transition: all .12s cubic-bezier(.47,0,.745,.715);
+}
+
+.card-medium:hover{
+    color: #FFE700;
+    background-color: black;
+    transition: all .12s cubic-bezier(.47,0,.745,.715);
+}
+
+.card-easy{
+    background-color: #00F7BC;
+    transition: all .12s cubic-bezier(.47,0,.745,.715);
+}
+
+.card-easy:hover{
+    color: #00F7BC;
+    background-color: black;
+    transition: all .12s cubic-bezier(.47,0,.745,.715);
 }
 
 .card-links a{

@@ -31,8 +31,9 @@
         <h2 id="card-content">{{card}}</h2>
     </div>
     
+    {% if request.session.review_type == 'regular' %}
     <div class="card-links">
-        <a id="flip-card" href="{% url 'practice_back_data' deck_slug=deck_slug pk=card.pk %}">
+        <a id="flip-card" href="{% url 'practice_back_data' deck_slug=deck_slug pk=card.pk side='back' %}">
             <div class="card-link-nav card-flip">Flip</div>
         </a>
 
@@ -41,6 +42,25 @@
         </a>
         
     </div>
+    {% endif %}
+
+        {% if request.session.review_type == 'ranked' %}
+    <div class="card-links">
+        <a id="hard-card" data-difficulty="hard" href="{% url 'practice_front_data_ranking' deck_slug=deck_slug pk=card.pk %}">
+            <div class="card-ranking-nav card-hard">No clue</div>
+        </a>
+
+        <a id="medium-card" data-difficulty="medium"  href="{% url 'practice_front_data_ranking' deck_slug=deck_slug pk=next_pk %}">
+            <div class="card-ranking-nav card-medium">Ehh...</div>
+        </a>
+
+        <a id="easy-card" data-difficulty="easy"  href="{% url 'practice_front_data_ranking' deck_slug=deck_slug pk=next_pk %}">
+            <div class="card-ranking-nav card-easy">Easy!</div>
+        </a>
+        
+    </div>
+    {% endif %}
+
 </div>
 
 
@@ -57,62 +77,137 @@
 
     let deleteLink = document.querySelector('#delete-link')
 
-    let flipUrl = '{% url "practice_back_data" deck_slug=deck_slug pk=card.pk %}'
+    let hard = document.querySelector('#hard-card')
+
+    let medium = document.querySelector('#medium-card')
+
+    let easy = document.querySelector('#easy-card')
+
+    let flipUrl = '{% url "practice_back_data" deck_slug=deck_slug pk=card.pk side="back" %}'
 
     let nextUrl = '{% url "practice_front_data" deck_slug=deck_slug pk=next_pk %}'
 
-    function flipCard(e){
-        e.preventDefault();
-    
-        fetch(flipUrl, {
-        headers: {
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        credentials: 'include'
-        })
-        .then(response => {
-            return response.json()
-        })
-        .then(data=> {
-            content.textContent = data.text
-            if(data.side == 'front'){
-                flipUrl =  `/lightning-cards/decks/${data.deck}/${data.card_pk}/back/`
-            }
-            else{
-                flipUrl = `/lightning-cards/decks/${data.deck}/${data.card_pk}/front/`
-            }
-            deleteLink.href = `/lightning-cards/decks/${data.deck}/${data.card_pk}/delete/`
-            editLink.href = `/lightning-cards/decks/${data.deck}/${data.card_pk}/`
+    let nextRankingUrl = '{% url "practice_front_data_ranking" deck_slug=deck_slug pk=next_pk %}'
 
-        })
+    let front = '{{card}}'
+
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+        return cookieValue;
     }
 
+    let csrftoken = getCookie('csrftoken');
+
+
+    function flipCard(e){
+        e.preventDefault();
+
+        fetch(flipUrl, {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            credentials: 'include'
+            })
+            .then(response => {
+                console.log(response)
+                return response.json()
+            })
+            .then(data=> {
+                console.log(data)
+                content.textContent = data.text
+                if(data.side == 'front'){
+                    flipUrl =  `/lightning-cards/decks/${data.deck}/${data.card_pk}/${data.side}/data`
+                }
+                else{
+                    flipUrl = `/lightning-cards/decks/${data.deck}/${data.card_pk}/${data.side}/data`
+                }
+                deleteLink.href = `/lightning-cards/decks/${data.deck}/${data.card_pk}/delete/`
+                editLink.href = `/lightning-cards/decks/${data.deck}/${data.card_pk}/`
+
+            })
+    }
+
+
+    function getNextCardRanking(e){
+        e.preventDefault();
+
+        let dataPost = {
+            difficulty: this.dataset.difficulty,
+            card: front,
+        }
+    
+        fetch(nextRankingUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify(dataPost),
+            credentials: 'include'
+            })
+            .then(response => {
+                console.log(response)
+                return response.json()
+            })
+            .then(data=> {
+                console.log(data)
+                content.textContent = data.text
+                nextRankingUrl = `/lightning-cards/decks/${data.deck}/${data.next_pk}/ranking/data/front/`
+                flipUrl = `/lightning-cards/decks/${data.deck}/${data.card_pk}/${data.side}/data`
+                console.log(flipUrl)
+                deleteLink.href = `/lightning-cards/decks/${data.deck}/${data.card_pk}/delete/`
+                editLink.href = `/lightning-cards/decks/${data.deck}/${data.card_pk}/`
+                front = `${data.text}`
+                console.log(front)
+            })
+    }
 
     function getNextCard(e){
         e.preventDefault();
     
         fetch(nextUrl, {
-        headers: {
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        credentials: 'include'
-        })
-        .then(response => {
-            return response.json()
-        })
-        .then(data=> {
-            content.textContent = data.text
-            nextUrl = `/lightning-cards/decks/${data.deck}/${data.next_pk}/front/`
-            flipUrl = `/lightning-cards/decks/${data.deck}/${data.card_pk}/back/`
-            deleteLink.href = `/lightning-cards/decks/${data.deck}/${data.card_pk}/delete/`
-            editLink.href = `/lightning-cards/decks/${data.deck}/${data.card_pk}/`
-        })
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            credentials: 'include'
+            })
+            .then(response => {
+                console.log(response)
+                return response.json()
+            })
+            .then(data=> {
+                console.log(data)
+                content.textContent = data.text
+                nextUrl = `/lightning-cards/decks/${data.deck}/${data.next_pk}/front/`
+                flipUrl = `/lightning-cards/decks/${data.deck}/${data.card_pk}/${data.side}/data`
+                console.log(flipUrl)
+                deleteLink.href = `/lightning-cards/decks/${data.deck}/${data.card_pk}/delete/`
+                editLink.href = `/lightning-cards/decks/${data.deck}/${data.card_pk}/`
+                front = `${data.text}`
+                console.log(front)
+            })
     }
     
     flipLink.addEventListener("click", flipCard)
     nextCardLink.addEventListener("click", getNextCard)
+
+    hard.addEventListener("click", getNextCardRanking)
+    medium.addEventListener("click", getNextCardRanking)
+    easy.addEventListener("click", getNextCardRanking)
 
     </script>
 

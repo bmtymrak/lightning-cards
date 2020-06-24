@@ -25,6 +25,20 @@
     </a>
 </div>
 
+<div class="review-options-container">
+    <a href="{% url 'practice_front_ranking' deck_slug=deck.slug %}">
+        <div class="review-option">
+            Proficiency Practice
+        </div>
+    </a>
+
+    <a href="{% url 'practice_front_ranking' deck_slug=deck.slug %}">
+        <div class="review-option">
+            Random Order Practice
+        </div>
+    </a>
+
+</div>
 <div class="deck-list">
     {% for card in cards %}
     
