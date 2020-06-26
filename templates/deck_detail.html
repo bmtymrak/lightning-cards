@@ -26,17 +26,15 @@
 </div>
 
 <div class="review-options-container">
+    <h2>Review Methods:</h2>
     <a href="{% url 'practice_front_ranking' deck_slug=deck.slug %}">
         <div class="review-option">
-            Proficiency Practice
+            <p>Proficiency Practice</p>
+            <p class="review-option-subtext">Review cards based on how well you know them</p>
         </div>
     </a>
 
-    <a href="{% url 'practice_front_ranking' deck_slug=deck.slug %}">
-        <div class="review-option">
-            Random Order Practice
-        </div>
-    </a>
+    <div>Or click on a card below to start reviewing in order</div>
 
 </div>
 <div class="deck-list">
