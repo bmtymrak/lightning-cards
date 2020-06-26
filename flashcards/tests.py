@@ -186,7 +186,7 @@ class CardViewsTest(TestCase):
 
 
     def test_card_practice_data_back_view(self):
-        response = self.client.get(reverse('practice_back_data', kwargs={'deck_slug':self.deck.slug, 'pk':self.card.pk}), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = self.client.get(reverse('practice_back_data', kwargs={'deck_slug':self.deck.slug, 'pk':self.card.pk, 'side':'back'}), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test back')
 
