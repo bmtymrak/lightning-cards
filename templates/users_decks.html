@@ -1,0 +1,8 @@
+<ul>
+{% for deck in users_decks %}
+    <li>
+        <a href="{% url 'deck_detail' slug=deck.slug %}">{{deck.name}}</a>
+    </li>
+{% endfor %}
+
+</ul>

@@ -1,9 +1,11 @@
+{% load flashcard_tags %}
 <nav class="nav-bar nav-bar-hidden">
     <div class="nav-container">
         <ul>
             <li><a href="{% url 'home' %}"><span class="nav-title">Lightning Cards</span></a></li>
             <li>{{request.user}}</li>
             <li><a href="{% url 'deck_list' %}">Decks</a></li>
+            {% display_users_decks %}
             <li><a href="{% url 'new_deck' %}">Create Deck</a></li>
             <li><a href="{% url 'logout' %}">Log Out</a></li>
         </ul>

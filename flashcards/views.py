@@ -117,33 +117,6 @@ class DeckDeleteView(LoginRequiredMixin, DeleteView):
 #     def get_success_url(self):
 #         return reverse_lazy("deck_detail", kwargs={"slug": self.kwargs["deck_slug"]})
 
-
-# class CardCreateView(LoginRequiredMixin, CreateView):
-#     # form_class = CardForm
-#     form_class = CardFormSet
-#     template_name = "card_create.html"
-
-#     # def get_context_data(self, **kwargs):
-#     #     data = super(CardCreateView, self).get_context_data(**kwargs)
-#     #     # data['formset'] = CardFormSet(queryset=Card.objects.none())
-
-#     #     return data
-
-#     def form_valid(self, form):
-#         self.obj = form.save(commit=False)
-#         self.obj.deck = (
-#             Deck.objects.all()
-#             .filter(slug=self.kwargs["deck_slug"], user=self.request.user)
-#             .get()
-#         )
-
-#         # formset = CardFormSet(data=request.POST)
-        
-#         return super().form_valid(form)
-
-#     def get_success_url(self):
-#         return reverse_lazy("deck_detail", kwargs={"slug": self.kwargs["deck_slug"]})
-
 class CardCreateView(LoginRequiredMixin, TemplateResponseMixin, View):
     template_name = "card_create.html"
 
