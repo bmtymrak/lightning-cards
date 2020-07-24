@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ValidationError
+from django.forms import ModelForm, ValidationError, modelformset_factory
 from .models import Deck, Card
 
 
@@ -37,3 +37,7 @@ class CardForm(ModelForm):
     class Meta:
         model=Card
         fields = ['front', 'back']
+
+
+
+CardFormSet = modelformset_factory(Card, fields=('front', 'back'), extra=3)

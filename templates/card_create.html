@@ -13,7 +13,7 @@
 </div>
 
 <div class="edit-container">
-    <form class="edit-form" method="POST">
+    <!-- <form class="edit-form" method="POST">
         {% csrf_token %}
         <p>{{form.non_field_errors}}</p>
 
@@ -29,7 +29,57 @@
         <div class="form-button-container">
         <button type="submit">Create</button>
         </div>
+    </form> -->
+
+    <form class="edit-form" method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {% for form in formset %}
+        <div class="form-container">
+            {{form.id}}
+            <div class="auth-form-item">
+                <p>{{form.front.label_tag}}</p>
+                <p>{{form.front}}</p>
+            </div>
+
+            <div class="auth-form-item">
+                <p>{{form.back.label_tag}}</p>
+                <p>{{form.back}}</p>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="form-button-container">
+            <button type="submit">Create</button>
+        </div>
     </form>
+    
 </div>
+<button id="add-more">+ Add More</button>
 
 {% endblock content %}
+
+{% block script %}
+<script>
+let formNum = document.querySelectorAll('.form-container').length-1
+let parentForm = document.querySelector(".edit-form")
+let formDiv = document.querySelector('.form-container')
+let submitButton = document.querySelector('.form-button-container')
+let addButton = document.querySelector('#add-more')
+let totalForms = document.querySelector('#id_form-TOTAL_FORMS')
+addButton.addEventListener('click', addForm)
+
+function addForm(e){
+    e.preventDefault()
+
+    let newFormDiv = formDiv.cloneNode(true)
+    let formRegex = RegExp(`form-(\\d){1}-`, 'g')
+    newFormDiv.innerHTML = newFormDiv.innerHTML.replace(formRegex,`form-${formNum+1}-`)
+    console.log(newFormDiv.innerHTML)
+    formNum++
+    parentForm.insertBefore(newFormDiv, submitButton)
+    totalForms.setAttribute('value',`${formNum+1}`)
+}
+
+
+</script>
+{% endblock script %}

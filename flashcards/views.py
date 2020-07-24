@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import (
     CreateView,
     UpdateView,
@@ -6,6 +6,7 @@ from django.views.generic import (
     ListView,
     DeleteView,
 )
+from django.views.generic.base import TemplateResponseMixin, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
@@ -14,7 +15,7 @@ from django.http import JsonResponse
 import json, random
 
 from .models import Deck, Card
-from .forms import DeckForm, CardForm
+from .forms import DeckForm, CardForm, CardFormSet
 
 
 class DeckCreateView(LoginRequiredMixin, CreateView):
@@ -86,35 +87,84 @@ class DeckDeleteView(LoginRequiredMixin, DeleteView):
         return reverse_lazy("deck_list")
 
 
-class CardCreateView(LoginRequiredMixin, CreateView):
-    form_class = CardForm
+# class CardCreateView(LoginRequiredMixin, CreateView):
+#     form_class = CardForm
+#     template_name = "card_create.html"
+
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+        
+#         if self.request.method == "POST":
+#             data = self.request.POST.copy()
+#             data["deck"] = (
+#                 Deck.objects.all()
+#                 .filter(slug=self.kwargs["deck_slug"], user=self.request.user)
+#                 .get()
+#             )
+#             kwargs["data"] = data
+
+#         return kwargs
+
+#     def form_valid(self, form):
+#         self.obj = form.save(commit=False)
+#         self.obj.deck = (
+#             Deck.objects.all()
+#             .filter(slug=self.kwargs["deck_slug"], user=self.request.user)
+#             .get()
+#         )
+#         return super().form_valid(form)
+
+#     def get_success_url(self):
+#         return reverse_lazy("deck_detail", kwargs={"slug": self.kwargs["deck_slug"]})
+
+
+# class CardCreateView(LoginRequiredMixin, CreateView):
+#     # form_class = CardForm
+#     form_class = CardFormSet
+#     template_name = "card_create.html"
+
+#     # def get_context_data(self, **kwargs):
+#     #     data = super(CardCreateView, self).get_context_data(**kwargs)
+#     #     # data['formset'] = CardFormSet(queryset=Card.objects.none())
+
+#     #     return data
+
+#     def form_valid(self, form):
+#         self.obj = form.save(commit=False)
+#         self.obj.deck = (
+#             Deck.objects.all()
+#             .filter(slug=self.kwargs["deck_slug"], user=self.request.user)
+#             .get()
+#         )
+
+#         # formset = CardFormSet(data=request.POST)
+        
+#         return super().form_valid(form)
+
+#     def get_success_url(self):
+#         return reverse_lazy("deck_detail", kwargs={"slug": self.kwargs["deck_slug"]})
+
+class CardCreateView(LoginRequiredMixin, TemplateResponseMixin, View):
     template_name = "card_create.html"
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
+    def get(self, request, *args, **kwargs):
+        formset = CardFormSet(queryset=Card.objects.none())
+        return self.render_to_response({'formset':formset})
 
-        if self.request.method == "POST":
-            data = self.request.POST.copy()
-            data["deck"] = (
-                Deck.objects.all()
-                .filter(slug=self.kwargs["deck_slug"], user=self.request.user)
-                .get()
-            )
-            kwargs["data"] = data
+    def post(self, request, *args, **kwargs):
+        formset = CardFormSet(data=request.POST)
+        if formset.is_valid():
+            
+            forms = formset.save(commit=False)
+            for form in forms:
+                form.deck = Deck.objects.all().filter(slug=self.kwargs["deck_slug"], user=self.request.user).get()
+                print(form)
+                form.save()
+            return redirect(reverse_lazy("deck_detail", kwargs={"slug":self.kwargs["deck_slug"]}))
 
-        return kwargs
+        return self.render_to_response({'formset':formset})
 
-    def form_valid(self, form):
-        self.obj = form.save(commit=False)
-        self.obj.deck = (
-            Deck.objects.all()
-            .filter(slug=self.kwargs["deck_slug"], user=self.request.user)
-            .get()
-        )
-        return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse_lazy("deck_detail", kwargs={"slug": self.kwargs["deck_slug"]})
 
 
 class CardUpdateView(LoginRequiredMixin, UpdateView):
@@ -261,6 +311,7 @@ class PracticeViewFrontRanking(LoginRequiredMixin, DetailView):
 @login_required
 def PracticeDataFrontRanking(request, deck_slug, pk):
 
+    print(request.content_type)
     #Get data from AJAX POST
     difficulty = json.loads(request.body)['difficulty']
     card_front = json.loads(request.body)['card']
