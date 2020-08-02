@@ -35,7 +35,7 @@ class Card(models.Model):
         elif difficulty == 'easy' and self.proficiency < 10:
             self.proficiency += 1
         self.save()
-        return        
+        return
 
     def __str__(self):
         return self.front
@@ -45,4 +45,3 @@ class Card(models.Model):
             models.UniqueConstraint(fields=["front", "deck"], name="unique_front_deck")
         ]
         ordering = ['front']
-

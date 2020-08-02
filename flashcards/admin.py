@@ -8,4 +8,3 @@ class CardAdmin(admin.ModelAdmin):
     list_filter = ('deck',)
 
 admin.site.register(Deck)
-# admin.site.register(Card)
