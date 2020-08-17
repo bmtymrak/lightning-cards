@@ -48,13 +48,14 @@
             </div>
         </div>
         {% endfor %}
+        <button id="add-more" type="button">+ Add More</button>
         <div class="form-button-container">
             <button type="submit">Create</button>
         </div>
     </form>
     
 </div>
-<button id="add-more">+ Add More</button>
+
 
 {% endblock content %}
 
@@ -63,7 +64,6 @@
 let formNum = document.querySelectorAll('.form-container').length-1
 let parentForm = document.querySelector(".edit-form")
 let formDiv = document.querySelector('.form-container')
-let submitButton = document.querySelector('.form-button-container')
 let addButton = document.querySelector('#add-more')
 let totalForms = document.querySelector('#id_form-TOTAL_FORMS')
 addButton.addEventListener('click', addForm)
@@ -76,7 +76,7 @@ function addForm(e){
     newFormDiv.innerHTML = newFormDiv.innerHTML.replace(formRegex,`form-${formNum+1}-`)
     console.log(newFormDiv.innerHTML)
     formNum++
-    parentForm.insertBefore(newFormDiv, submitButton)
+    parentForm.insertBefore(newFormDiv, addButton)
     totalForms.setAttribute('value',`${formNum+1}`)
 }
 
